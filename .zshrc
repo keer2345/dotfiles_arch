@@ -70,7 +70,20 @@ ZSH_THEME="robbyrussell"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git)
+plugins=(
+  git 
+  history   # 历史命令增强
+  autojump  # 目录跳转
+  sudo      # 按两次 ESC 添加 sudo
+
+  # 第三方插件：
+  # 安装 zsh-autosuggestions
+  # git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+  zsh-autosuggestions
+  # 安装 zsh-syntax-highlighting
+  # git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+  zsh-syntax-highlighting
+)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -107,13 +120,22 @@ source $ZSH/oh-my-zsh.sh
 alias ssh_aliyun="ssh keer@120.78.231.219"
 alias ssh_tencent="ssh keer@175.178.230.127"
 
-export MAVEN_HOME=/home/keer/Software/apache-maven-3.9.11
-export PATH=${MAVEN_HOME}/bin:$PATH
-
 
 alias goproxy='export http_proxy=http://127.0.0.1:20170 https_proxy=http://127.0.0.1:20170'
 alias disproxy='unset http_proxy https_proxy'
 
 alias idea='~/Software/JetBrains/IDEA/bin/idea.sh > ~/Software/JetBrains/IDEA/output.log 2>&1'
-alias j="autojump"
 alias vim="nvim"
+
+# Remove j alias and properly load autojump
+unalias j 2>/dev/null
+
+# Load autojump if available
+if [ -f /usr/share/autojump/autojump.zsh ]; then
+    source /usr/share/autojump/autojump.zsh
+fi
+
+
+export MAVEN_HOME=/home/keer/Software/apache-maven-3.9.11
+export PATH=${MAVEN_HOME}/bin:$PATH
+
