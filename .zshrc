@@ -116,3 +116,4 @@ alias disproxy='unset http_proxy https_proxy'
 
 alias idea='~/Software/JetBrains/IDEA/bin/idea.sh > ~/Software/JetBrains/IDEA/output.log 2>&1'
 alias j="autojump"
+alias vim="nvim"

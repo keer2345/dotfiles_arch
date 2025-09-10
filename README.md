@@ -4,8 +4,8 @@
 
 ## 如何同步 dotfiles
 
-[yadm](https://github.com/yadm-dev/yadm)
-    - [Yadm Getting Started](https://yadm.io/docs/getting_started#)
+- [yadm](https://github.com/yadm-dev/yadm)
+- [Yadm Getting Started](https://yadm.io/docs/getting_started#)
 
 ```sh
 yadm init
