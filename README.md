@@ -18,3 +18,7 @@ yadm push -u origin <local branch>:<remote branch>
 yadm pull
 yadm status
 ```
+
+## Window Manager
+- [Openbox](.config/openbox/README.md)
+

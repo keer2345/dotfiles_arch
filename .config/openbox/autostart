@@ -18,6 +18,8 @@
 
 #!/bin/sh
 
+xrandr --output eDP-1 --mode 1920x1200 --scale 1.0x1.0 --pos 0x0 --rate 90
+
 # Set a background wallpaper
 nitrogen --restore &
 
@@ -27,7 +29,7 @@ tint2 &
 xset b off &
 
 # Start a compositor for visual effects (e.g., shadows, transparency)
-# picom &
+picom -b &
 
 # Start a network manager applet
 nm-applet &
@@ -35,8 +37,11 @@ nm-applet &
 # Launch Fcitx5 Input Method Framework
 fcitx5 -d &
 
+# 启动通知守护进程
+dunst &
+
 # Start a volume control applet
-volumeicon &
+# volumeicon &
 
 # Start a screen locker
 xautolock -time 10 -locker slock &

@@ -462,6 +462,27 @@ Copy the file to $HOME/.config/openbox/ instead. -->
 						</action>
 					</keybind>
 
+					<!-- 音量增加 -->
+<keybind key="W-F11">
+  <action name="Execute">
+    <command>~/.config/openbox/scripts/volume.sh up</command>
+  </action>
+</keybind>
+
+<!-- 音量降低 -->
+<keybind key="W-F10">
+  <action name="Execute">
+    <command>~/.config/openbox/scripts/volume.sh down</command>
+  </action>
+</keybind>
+
+<!-- 静音切换 -->
+<keybind key="W-F9">
+  <action name="Execute">
+    <command>~/.config/openbox/scripts/volume.sh toggle</command>
+  </action>
+</keybind>
+
 				</keyboard>
 				<mouse>
 					<dragThreshold>1</dragThreshold>
