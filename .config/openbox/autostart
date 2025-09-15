@@ -31,6 +31,8 @@ xset b off &
 # Start a compositor for visual effects (e.g., shadows, transparency)
 picom -b &
 
+# 钥匙环，不需要每次都输入WIFI密码
+/usr/bin/lxqt-policykit-agent &
 # Start a network manager applet
 nm-applet &
 
