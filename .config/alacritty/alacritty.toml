@@ -14,7 +14,7 @@ TERM = "xterm-256color"
 
 [font]
 builtin_box_drawing = true
-size = 11.5
+size = 11
 
 [font.normal]
 family = "FiraCode Nerd Font"
