@@ -1,0 +1,17 @@
+i3lock \
+    --inside-color=373445ff \
+    --ring-color=ffffffff \
+    --line-uses-inside \
+    --keyhl-color=d23c3dff \
+    --bshl-color=d23c3dff \
+    --separator-color=00000000 \
+    --insidever-color=fecf4dff \
+    --insidewrong-color=d23c3dff \
+    --ringver-color=ffffffff \
+    --ringwrong-color=ffffffff \
+    --verif-color=ffffffff \
+    --wrong-color=ffffffff \
+    --layout-color=ffffffff \
+    --time-color=ffffffff \
+    --date-color=ffffffff \
+    --indicator
