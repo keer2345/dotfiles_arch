@@ -31,13 +31,19 @@ xset b off &
 # Start a compositor for visual effects (e.g., shadows, transparency)
 picom -b &
 
+# 启动 GNOME Keyring Daemon 并导出环境变量
+# 这是最关键的一步！
+eval $(gnome-keyring-daemon --start --components=secrets)
+export SSH_AUTH_SOCK
+export GNOME_KEYRING_CONTROL
+
 # 钥匙环，不需要每次都输入WIFI密码
 /usr/bin/lxqt-policykit-agent &
 # Start a network manager applet
 nm-applet &
 
-# Launch Fcitx5 Input Method Framework
-fcitx5 -d &
+# Start a screen locker
+xautolock -time 10 -locker slock &
 
 # 启动通知守护进程
 dunst &
@@ -45,5 +51,7 @@ dunst &
 # Start a volume control applet
 # volumeicon &
 
-# Start a screen locker
-xautolock -time 10 -locker slock &
+
+# Launch Fcitx5 Input Method Framework
+fcitx5 &
+

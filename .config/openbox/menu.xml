@@ -104,7 +104,8 @@
   </menu>
   </menu>
   <separator/>
-    <item label="Lock"><action name="Execute"><command><![CDATA[xscreensaver-command -lock]]></command></action></item>
+    <!--item label="Lock"><action name="Execute"><command><![CDATA[xscreensaver-command -lock]]></command></action></item-->
+    <item label="Lock"><action name="Execute"><command><![CDATA[~/.config/openbox/scripts/lock.sh]]></command></action></item>
     <item label="Exit"><action name="Exit"/></item>
   </menu>
 </openbox_menu>
