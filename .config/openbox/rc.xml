@@ -282,7 +282,6 @@ Copy the file to $HOME/.config/openbox/ instead. -->
     <keybind key="W-C-q">
       <action name="Exit"/>
     </keybind>
-
     <keybind key="A-Escape">
       <action name="Lower"/>
       <action name="FocusToBottom"/>
@@ -388,6 +387,10 @@ Copy the file to $HOME/.config/openbox/ instead. -->
     <!-- 取消最大化：Win + Down -->
     <keybind key="W-S-m">
       <action name="Unmaximize"/>
+    </keybind>
+    <!-- 窗口最小化 -->
+    <keybind key="W-C-m">
+      <action name="Iconify"/>
     </keybind>
     <!-- 将窗口移动到屏幕左侧并全高显示 -->
     <keybind key="W-Left">
@@ -803,9 +806,15 @@ Copy the file to $HOME/.config/openbox/ instead. -->
     <context name="Root">
       <!-- Menus -->
       <mousebind button="Middle" action="Press">
+        <!--
         <action name="ShowMenu">
           <menu>client-list-combined-menu</menu>
         </action>
+          -->
+        <!-- 任务栏鼠标中键设置为无操作 -->
+         <action name="Execute">
+           <command>true</command>
+         </action>
       </mousebind>
       <mousebind button="Right" action="Press">
         <action name="ShowMenu">
