@@ -36,7 +36,7 @@ if [ -f "$SAVE_PATH" ]; then
     # nitrogen --set-zoom-fill --save "$SAVE_PATH" 2>/dev/null
     
     # 调用feh
-    feh --bg-fill "$SAVE_PATH" # 2>/dev/null
+    feh --bg-fill "$SAVE_PATH" 2>/dev/null
 else
     echo "Download failed."
     exit 1

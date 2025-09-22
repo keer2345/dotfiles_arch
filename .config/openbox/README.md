@@ -130,11 +130,11 @@ mkdir -p $HOME/Pictures/.wallpaper/
   - 访问 https://unsplash.com/developers 并注册一个开发者账户。
   - 创建一个新的 Application（选择 "Demo" 通常就足够了）。
   - 你会得到一个 Access Key，下面的脚本会用到它。
-3. 下载脚本 [wallpaper_download.sh](~/.config/openbox/scripts/wallpaper_download.sh)
+3. 编写下载脚本 [wallpaper_download.sh](./scripts/wallpaper_download.sh)
 
 #### 编写主控制脚本
 
-[change_wallpaper_auto.sh]~/.config/openbox/scripts/wallpaper_change.sh)
+[change_wallpaper_auto.sh](./scripts/wallpaper_change.sh)
 
 ```sh
 chmod +x ~/.config/openbox/scripts/wallpaper_download.sh
@@ -167,4 +167,4 @@ sudo systemctl enable cronie
 sudo systemctl status cronie
 ```
 
-由于在 openbox 下设置通过定时任务来执行 feh 或者 nitrogen 很麻烦，所以在 `rc.xml` 设置了手动执行 `~/.config/openbox/scripts/wallpaper_refresh.sh` 来刷新壁纸。
+由于在 openbox 下设置通过定时任务来执行 feh 或者 nitrogen 很麻烦，所以在 `rc.xml` 设置了手动执行 [wallpaper_refresh.sh](./scripts/wallpaper_refresh.sh) 来刷新壁纸。
