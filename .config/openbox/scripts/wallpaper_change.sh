@@ -1,12 +1,14 @@
 #!/bin/bash
 
-# 配置变量
-NITROGEN_DIR="$HOME/.config/nitrogen"
-WALLPAPER_DIR="$HOME/.config/nitrogen/pictures"
-MAX_FILES=10  # 设置最大壁纸保存数量
+cd ~/.config/openbox/scripts
 
 # 运行下载脚本
-source $NITROGEN_DIR/download_unsplash_wallpaper.sh
+source wallpaper_download.sh
+
+# 配置变量
+WALLPAPER_DIR="$HOME/Pictures/.wallpaper"
+MAX_FILES=10  # 设置最大壁纸保存数量
+
 
 # （可选）清理旧壁纸，只保留最新的 MAX_FILES 张
 cd "$WALLPAPER_DIR" || exit

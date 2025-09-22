@@ -2,7 +2,7 @@
 
 # 配置变量
 ACCESS_KEY="Y_Z0d-7o3tx8ig7svcMTSo3Gwqbo5xahYXrEeOyvBzQ"  # 务必替换成你的Key！
-WALLPAPER_DIR="$HOME/.config/nitrogen/pictures"
+WALLPAPER_DIR="$HOME/Pictures/.wallpaper"
 # 可以从多个主题中选择：nature, space, texture, abstract, gradient...
 QUERY="nature"
 
@@ -25,13 +25,18 @@ SAVE_PATH="${WALLPAPER_DIR}/${FILENAME}"
 
 # 下载图片
 echo "Downloading new wallpaper from Unsplash..."
+
 curl -s -o "$SAVE_PATH" "$DOWNLOAD_LINK"
+
 
 # 检查下载是否成功
 if [ -f "$SAVE_PATH" ]; then
     echo "Wallpaper saved to: $SAVE_PATH"
     # 调用Nitrogen设置新壁纸
-    nitrogen --set-zoom-fill --save "$SAVE_PATH" 2>/dev/null
+    # nitrogen --set-zoom-fill --save "$SAVE_PATH" 2>/dev/null
+    
+    # 调用feh
+    feh --bg-fill "$SAVE_PATH" # 2>/dev/null
 else
     echo "Download failed."
     exit 1

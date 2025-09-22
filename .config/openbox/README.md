@@ -119,38 +119,38 @@ xinput enable [id]
 这种方式的好处是即时生效，但缺点是重启后设置会丢失。适合用来测试哪些配置适合你。
 
 
-### nitrogen
+### 壁纸
 #### 下载壁纸
 1. 创建目录
 ```
-mkdir -p $HOME/.config/nitrogen/pictures
+mkdir -p $HOME/Pictures/.wallpaper/
 ```
 
 2. 注册开发者账户
   - 访问 https://unsplash.com/developers 并注册一个开发者账户。
   - 创建一个新的 Application（选择 "Demo" 通常就足够了）。
   - 你会得到一个 Access Key，下面的脚本会用到它。
-3. 下载脚本 [download_unsplash_wallpaper.sh](../nitrogen/download_unsplash_wallpaper.sh)
+3. 下载脚本 [wallpaper_download.sh](~/.config/openbox/scripts/wallpaper_download.sh)
 
 #### 编写主控制脚本
 
-[change_wallpaper_auto.sh](../nitrogen/change_wallpaper_auto.sh)
+[change_wallpaper_auto.sh]~/.config/openbox/scripts/wallpaper_change.sh)
 
 ```sh
-chmod +x ~/.config/nitrogen/download_unsplash_wallpaper.sh
-chmod +x ~/.config/nitrogen/change_wallpaper_auto.sh
+chmod +x ~/.config/openbox/scripts/wallpaper_download.sh
+chmod +x ~/.config/openbox/scripts/wallpaper_change.sh
 ```
 
 测试：
 ```sh
-~/.config/nitrogen/change_wallpaper_auto.sh
+~/.config/openbox/scripts/wallpaper_change.sh
 ```
 
 #### 使用 Cron 设置定时任务
 `crontab -e`
 ```sh
 # 每30分钟更换一次
-*/30 * * * * /bin/bash $HOME/.config/nitrogen/change_wallpaper_auto.sh
+*/30 * * * * /bin/bash ~/.config/openbox/scripts/wallpaper_change.sh
 ```
 
 如果 `crontab` 命令失效，则需要安装：
@@ -166,3 +166,5 @@ sudo systemctl enable cronie
 # 检查服务状态
 sudo systemctl status cronie
 ```
+
+由于在 openbox 下设置通过定时任务来执行 feh 或者 nitrogen 很麻烦，所以在 `rc.xml` 设置了手动执行 `~/.config/openbox/scripts/wallpaper_refresh.sh` 来刷新壁纸。

@@ -480,6 +480,12 @@ Copy the file to $HOME/.config/openbox/ instead. -->
         <y>50%</y>
       </action>
     </keybind>
+    <!-- 手动切换壁纸 -->
+    <keybind key="W-S-w">
+      <action name="Execute">
+        <command>~/.config/openbox/scripts/wallpaper_refresh.sh</command>
+      </action>
+    </keybind>
     <!-- 音量增加 -->
     <keybind key="W-F11">
       <action name="Execute">
