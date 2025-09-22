@@ -279,6 +279,10 @@ Copy the file to $HOME/.config/openbox/ instead. -->
     <keybind key="W-q">
       <action name="Close"/>
     </keybind>
+    <keybind key="W-C-q">
+      <action name="Exit"/>
+    </keybind>
+
     <keybind key="A-Escape">
       <action name="Lower"/>
       <action name="FocusToBottom"/>
