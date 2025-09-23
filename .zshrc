@@ -139,4 +139,5 @@ fi
 export MAVEN_HOME=/home/keer/Software/apache-maven-3.9.11
 export PATH=${MAVEN_HOME}/bin:$PATH
 
-export DISPLAY=:0.0
+
+. "$HOME/.local/bin/env"

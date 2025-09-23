@@ -13,6 +13,8 @@ mkdir -p "$WALLPAPER_DIR"
 # 这个URL会返回一张随机的高分辨率nature图片
 IMAGE_URL="https://api.unsplash.com/photos/random?client_id=${ACCESS_KEY}&query=${QUERY}&orientation=landscape&w=1920"
 
+echo $IMAGE_URL
+
 # 获取图片的真实下载地址
 # Unsplash的API返回JSON，我们用 `grep` 和 `sed` 来提取 `urls.full` 字段
 DOWNLOAD_LINK=$(curl -s "$IMAGE_URL" | grep -o '"full":"[^"]*"' | sed 's/"full":"//;s/"//')
