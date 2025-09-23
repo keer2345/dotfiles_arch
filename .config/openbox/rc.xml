@@ -480,10 +480,16 @@ Copy the file to $HOME/.config/openbox/ instead. -->
         <y>50%</y>
       </action>
     </keybind>
-    <!-- 手动切换壁纸 -->
+    <!-- 切换壁纸，随机选择 -->
+    <keybind key="W-C-w">
+      <action name="Execute">
+        <command>~/.config/openbox/scripts/wallpaper_refresh.sh random</command>
+      </action>
+    </keybind>
+    <!-- 切换壁纸，选择最新的 -->
     <keybind key="W-S-w">
       <action name="Execute">
-        <command>~/.config/openbox/scripts/wallpaper_refresh.sh</command>
+        <command>~/.config/openbox/scripts/wallpaper_refresh.sh latest</command>
       </action>
     </keybind>
     <!-- 音量增加 -->

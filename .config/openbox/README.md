@@ -149,8 +149,8 @@ chmod +x ~/.config/openbox/scripts/wallpaper_change.sh
 #### 使用 Cron 设置定时任务
 `crontab -e`
 ```sh
-# 每30分钟更换一次
-*/30 * * * * /bin/bash ~/.config/openbox/scripts/wallpaper_change.sh
+# 每15分钟更换一次
+*/15 * * * * /bin/bash ~/.config/openbox/scripts/wallpaper_change.sh
 ```
 
 如果 `crontab` 命令失效，则需要安装：
