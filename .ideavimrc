@@ -24,6 +24,7 @@ set relativenumber
 set incsearch
 set hlsearch
 set keep-english-in-normal
+set belloff=all
 
 
 " ================================================================================================

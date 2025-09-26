@@ -1,17 +1,12 @@
-i3lock \
-    --inside-color=373445ff \
-    --ring-color=ffffffff \
-    --line-uses-inside \
-    --keyhl-color=d23c3dff \
-    --bshl-color=d23c3dff \
-    --separator-color=00000000 \
-    --insidever-color=fecf4dff \
-    --insidewrong-color=d23c3dff \
-    --ringver-color=ffffffff \
-    --ringwrong-color=ffffffff \
-    --verif-color=ffffffff \
-    --wrong-color=ffffffff \
-    --layout-color=ffffffff \
-    --time-color=ffffffff \
-    --date-color=ffffffff \
-    --indicator
+#!/bin/bash
+
+cd ~/Pictures/.wallpaper
+
+FILE_NAME=$(find . -maxdepth 1 -type f -printf '%T@ %p\n' | sort -n | tail -1 | cut -f2- -d" ")
+
+magick $FILE_NAME -blur 0x5 /tmp/lock-screen.jpg
+ 
+# 添加锁定图标
+ 
+# 锁定屏幕
+i3lock -i /tmp/lock-screen.jpg

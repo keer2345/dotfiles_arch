@@ -977,10 +977,11 @@ Copy the file to $HOME/.config/openbox/ instead. -->
 
 						# end of the example
 					-->
-    <application class="firefox">
+    <application class="konsole">
       <decor>no</decor>
     </application>
-    <application class="jetbrains-idea">
+
+    <application class="firefox">
       <decor>no</decor>
     </application>
     <application class="Pcmanfm">
@@ -989,5 +990,16 @@ Copy the file to $HOME/.config/openbox/ instead. -->
     <application class="Emacs">
       <decor>no</decor>
     </application>
+    <application class="Sublime_text">
+      <decor>no</decor>
+    </application>
+
+    <application class="jetbrains-idea">
+      <decor>no</decor>
+    </application>
+    <application class="jetbrains-pycharm">
+      <decor>no</decor>
+    </application>
+
   </applications>
 </openbox_config>

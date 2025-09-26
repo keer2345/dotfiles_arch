@@ -3,7 +3,7 @@
 ## Install
 > openbox obconf lxappearance tint2 obmenu3 obmenu-generator
 
-> network-manager-applet nitrogen picom xrandr dunst libnotify notify-send xautolock ktqt-policykit gnome-keyring seahorse i3lock-color
+> network-manager-applet nitrogen picom xrandr dunst libnotify notify-send xautolock ktqt-policykit gnome-keyring seahorse i3lock-color xfce4-power-manager
 
 ## volume
 ```sh

@@ -46,6 +46,7 @@
   </menu>
   <menu id="0.374616841448262" label="Other">
     <item label="IDEA"><action name="Execute"><command><![CDATA[/home/keer/Software/JetBrains/IDEA/bin/idea.sh]]></command></action></item>
+    <item label="PyCharm"><action name="Execute"><command><![CDATA[pycharm-professional]]></command></action></item>
     <item label="Welcome Center"><action name="Execute"><command><![CDATA[plasma-welcome]]></command></action></item>
   </menu>
   <menu id="0.807944281710647" label="Settings">

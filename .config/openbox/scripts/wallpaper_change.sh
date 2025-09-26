@@ -7,7 +7,7 @@ source wallpaper_download.sh
 
 # 配置变量
 WALLPAPER_DIR="$HOME/Pictures/.wallpaper"
-MAX_FILES=100  # 设置最大壁纸保存数量
+MAX_FILES=500  # 设置最大壁纸保存数量
 
 
 # （可选）清理旧壁纸，只保留最新的 MAX_FILES 张
