@@ -120,7 +120,7 @@ Copy the file to $HOME/.config/openbox/ instead. -->
 
 			use obconf if you want to change these without having to log out
 		and back in -->
-    <number>4</number>
+    <number>8</number>
     <firstdesk>1</firstdesk>
     <names>
       <!-- set names up here if you want to, like this:
@@ -249,6 +249,27 @@ Copy the file to $HOME/.config/openbox/ instead. -->
         <to>4</to>
       </action>
     </keybind>
+    <keybind key="W-5">
+      <action name="GoToDesktop">
+        <to>5</to>
+      </action>
+    </keybind>
+    <keybind key="W-6">
+      <action name="GoToDesktop">
+        <to>6</to>
+      </action>
+    </keybind>
+    <keybind key="W-7">
+      <action name="GoToDesktop">
+        <to>7</to>
+      </action>
+    </keybind>
+    <keybind key="W-8">
+      <action name="GoToDesktop">
+        <to>8</to>
+      </action>
+    </keybind>
+
     <keybind key="W-S-1">
       <action name="SendToDesktop">
         <to>1</to>
@@ -269,6 +290,27 @@ Copy the file to $HOME/.config/openbox/ instead. -->
         <to>4</to>
       </action>
     </keybind>
+    <keybind key="W-S-5">
+      <action name="SendToDesktop">
+        <to>5</to>
+      </action>
+    </keybind>
+    <keybind key="W-S-6">
+      <action name="SendToDesktop">
+        <to>6</to>
+      </action>
+    </keybind>
+    <keybind key="W-S-7">
+      <action name="SendToDesktop">
+        <to>7</to>
+      </action>
+    </keybind>
+    <keybind key="W-S-8">
+      <action name="SendToDesktop">
+        <to>8</to>
+      </action>
+    </keybind>
+
     <keybind key="W-d">
       <action name="ToggleShowDesktop"/>
     </keybind>
@@ -351,18 +393,18 @@ Copy the file to $HOME/.config/openbox/ instead. -->
         <command>rofi -show drun -show-icons</command>
       </action>
     </keybind>
-    <keybind key="W-t">
+    <keybind key="W-x">
       <action name="Execute">
-        <command>alacritty</command>
+        <command>konsole</command>
       </action>
     </keybind>
     <keybind key="W-e">
       <action name="Execute">
         <startupnotify>
           <enabled>true</enabled>
-          <name>pcmanfm</name>
+          <name>thunar</name>
         </startupnotify>
-        <command>pcmanfm</command>
+        <command>thunar</command>
       </action>
     </keybind>
     <keybind key="W-p">
@@ -372,21 +414,33 @@ Copy the file to $HOME/.config/openbox/ instead. -->
     </keybind>
     <keybind key="W-S-p">
       <action name="Execute">
-        <command>xrandr --output eDP-1 --mode 1920x1200 --scale 1.0x1.0 --pos 0x0 --rate 90</command>
+        <!--
+          1920x1200
+        -->
+        <command>xrandr --output eDP-1 --mode 1680x1050 --scale 1.0x1.0 --pos 0x0 --rate 90 --output DP-1 --off</command>
       </action>
     </keybind>
+
     <keybind key="W-C-p">
       <action name="Execute">
-        <command>xrandr --output eDP-1 --mode 1920x1200 --scale 1.0x1.0 --pos 0x0 --output DP-1 --auto --pos 1920x0</command>
+        <command>xrandr --output eDP-1 --mode 1680x1050 --scale 1.0x1.0 --pos 0x0 --output DP-1 --auto --pos 1680x0</command>
       </action>
+    </keybind>
+    <keybind key="W-C-o">
+      <action name="Execute">
+        <command>xrandr --output DP-1 --primary --mode 1920x1200 --auto --output eDP-1 --mode 1680x1050 --scale 1.0x1.0 --pos 0x0  --pos 1920x0</command>
+      </action>
+    </keybind>
+
+    <keybind key="W-f">
+      <action name="ToggleFullscreen"/>
+    </keybind>
+    <keybind key="W-t">
+      <action name="ToggleDecorations"/>
     </keybind>
     <!-- 最大化/取消最大化切换：Win + Up -->
     <keybind key="W-m">
-      <action name="Maximize"/>
-    </keybind>
-    <!-- 取消最大化：Win + Down -->
-    <keybind key="W-S-m">
-      <action name="Unmaximize"/>
+      <action name="ToggleMaximize"/>
     </keybind>
     <!-- 窗口最小化 -->
     <keybind key="W-C-m">
@@ -977,14 +1031,21 @@ Copy the file to $HOME/.config/openbox/ instead. -->
 
 						# end of the example
 					-->
+					  <!--
     <application class="konsole">
       <decor>no</decor>
     </application>
 
+    <application class="feh">
+      <decor>no</decor>
+    </application>
     <application class="firefox">
       <decor>no</decor>
     </application>
     <application class="Pcmanfm">
+      <decor>no</decor>
+    </application>
+    <application class="Thunar">
       <decor>no</decor>
     </application>
     <application class="Emacs">
@@ -998,6 +1059,11 @@ Copy the file to $HOME/.config/openbox/ instead. -->
       <decor>no</decor>
     </application>
     <application class="jetbrains-pycharm">
+      <decor>no</decor>
+    </application>
+      -->
+
+    <application class="*" type="normal">
       <decor>no</decor>
     </application>
 

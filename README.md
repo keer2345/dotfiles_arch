@@ -20,5 +20,7 @@ yadm status
 ```
 
 ## Window Manager
+
 - [Openbox](.config/openbox/README.md)
+- [bspwm](.config/bspwm/README.md)
 

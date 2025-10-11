@@ -17,8 +17,10 @@
 #xfce-mcs-manager &
 
 #!/bin/sh
+sh ~/.config/openbox/scripts/wallpaper_refresh.sh random &
 
-xrandr --output eDP-1 --mode 1920x1200 --scale 1.0x1.0 --pos 0x0 --rate 90
+# xrandr --output eDP-1 --mode 1920x1200 --scale 1.0x1.0 --pos 0x0 --rate 90
+xrandr --output eDP-1 --mode 1680x1050 --scale 1.0x1.0 --pos 0x0 --output DP-1 --auto --pos 1680x0
 
 # Set a background wallpaper
 nitrogen --restore &

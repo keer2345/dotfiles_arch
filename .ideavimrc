@@ -13,7 +13,7 @@ Plug 'preservim/nerdtree'
 " ================================================================================================
 inoremap jk <ESC>
 
-set clipboard+=unnamed
+"set clipboard+=unnamed
 set ignorecase
 "set scrolloff=30
 "set history=200
@@ -54,7 +54,7 @@ nmap 'f 'F
 "启用注释功能
 " set commentary
 "共享系统粘贴板
-" set clipboard=unnamedplus
+set clipboard=unnamedplus
 
 " paste之后不会把yank的内容替换掉
 vmap p "_dp

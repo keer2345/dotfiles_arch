@@ -34,6 +34,7 @@ curl -s -o "$SAVE_PATH" "$DOWNLOAD_LINK"
 # 检查下载是否成功
 if [ -f "$SAVE_PATH" ]; then
     echo "Wallpaper saved to: $SAVE_PATH"
+
     # 调用Nitrogen设置新壁纸
     # nitrogen --set-zoom-fill --save "$SAVE_PATH" 2>/dev/null
     

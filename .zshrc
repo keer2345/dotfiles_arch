@@ -126,6 +126,7 @@ alias disproxy='unset http_proxy https_proxy'
 
 alias idea='~/Software/JetBrains/IDEA/bin/idea.sh > ~/Software/JetBrains/IDEA/output.log 2>&1'
 alias vim="nvim"
+alias ngrep='grep -r --exclude-dir=node_modules --exclude-dir=dist --exclude-dir=.git'
 
 # Remove j alias and properly load autojump
 unalias j 2>/dev/null
