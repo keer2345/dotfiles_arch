@@ -428,7 +428,7 @@ Copy the file to $HOME/.config/openbox/ instead. -->
     </keybind>
     <keybind key="W-C-o">
       <action name="Execute">
-        <command>xrandr --output DP-1 --primary --mode 1920x1200 --auto --output eDP-1 --mode 1680x1050 --scale 1.0x1.0 --pos 0x0  --pos 1920x0</command>
+        <command>xrandr --output eDP-1 --mode 1680x1050 --scale 1.0x1.0 --pos 0x0 --output DP-1 --auto --pos 1680x0</command>
       </action>
     </keybind>
 

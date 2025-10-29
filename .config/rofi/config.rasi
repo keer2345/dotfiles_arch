@@ -13,4 +13,8 @@
 
 //@theme "/usr/share/rofi/themes/Monokai.rasi"
 
-@theme "/home/keer/.config/rofi/themes/rounded-nord-dark.rasi"
+//@theme "/home/keer/.config/rofi/themes/rounded-nord-dark.rasi"
+
+//@theme "/home/keer/.config/rofi/themes/squared-nord.rasi"
+
+@theme "/home/keer/.config/rofi/themes/squared-nord.rasi"
