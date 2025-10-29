@@ -1,0 +1,82 @@
+
+{
+    "layer": "top",
+    "modules-left": [
+        "hyprland/window"
+    ],
+    "modules-center": [
+        "hyprland/workspaces"
+    ],
+    "modules-right": [
+        "tray",
+        "battery",
+        "pulseaudio",
+        "clock"
+    ],
+    "hyprland/window": {
+        "icon": true,
+        "max-length": 50
+    },
+    "hyprland/workspaces": {
+        "all-outputs": true,
+        "move-to-monitor": true,
+        "format": "{id} {icon} ",
+        "format-icons": {
+            "Terminal": "",
+            "Web": "",
+            "Code": "",
+            "Chat": "",
+            "Mail": "",
+            "Cloud": "",
+            "default": "",
+            "empty": ""
+        }
+    },
+    "tray": {
+        "icon-size": 20,
+        "spacing": 8
+    },
+    "battery": {
+        "format": "{capacity}% {icon}",
+        "format-icons": [
+            "",
+            "",
+            "",
+            "",
+            ""
+        ]
+    },    
+    "pulseaudio": {
+        "format": "{volume}% {icon}",
+        "format-bluetooth": "{volume}% {icon}",
+        "format-muted": "",
+        "format-icons": {
+            "headphone": "",
+            "default": [
+                "",
+                ""
+            ]
+        },
+        "scroll-step": 1,
+        "on-click": "pavucontrol",
+        "ignored-sinks": [
+            "Easy Effects Sink"
+        ]
+    },
+    "clock": {
+        "timezone": "Asia/Chongqing",
+        "format-alt": "{:%Y-%m-%d}",
+        "tooltip-format": "\n<span size='9pt' font='WenQuanYi Zen Hei Mono'>{calendar}</span>",
+        "calendar": {
+            "weeks-pos": "right",
+            "format": {
+                "months": "<span color='#ffead3'><b>{}</b></span>",
+                "days": "<span color='#ecc6d9'><b>{}</b></span>",
+                "weeks": "<span color='#99ffdd'><b>W{}</b></span>",
+                "weekdays": "<span color='#ffcc66'><b>{}</b></span>",
+                "today": "<span color='#ff6699'><b><u>{}</u></b></span>"
+            }
+        }
+    }
+}
+
