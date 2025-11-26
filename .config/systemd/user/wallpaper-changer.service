@@ -1,0 +1,13 @@
+# ~/.config/systemd/user/wallpaper-changer.service
+[Unit]
+Description=Hyprland Random Wallpaper Changer
+PartOf=graphical-session.target
+
+[Service]
+Type=simple
+ExecStart=%h/.config/hypr/scripts/random-wallpaper.sh daemon
+Restart=on-failure
+Environment=DISPLAY=:0
+
+[Install]
+WantedBy=graphical-session.target

@@ -1,0 +1,7 @@
+
+# preload = /usr/share/hypr/wall0.png
+# wallpaper = , /usr/share/hypr/wall0.png
+
+preload = ~/Pictures/.wallpaper/unsplash_1762019100.jpg
+wallpaper = , ~/Pictures/.wallpaper/unsplash_1762019100.jpg
+
