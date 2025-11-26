@@ -60,3 +60,7 @@ if ls $TARGET_PATTERN 1> /dev/null 2>&1; then
 else
     echo "未找到 $TARGET_PATTERN 文件，跳过本次处理"
 fi
+
+echo ""
+echo ""
+echo ""

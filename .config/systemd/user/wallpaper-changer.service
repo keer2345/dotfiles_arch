@@ -11,3 +11,11 @@ Environment=DISPLAY=:0
 
 [Install]
 WantedBy=graphical-session.target
+
+# Run this service:
+#
+# 重新加载 systemd
+# systemctl --user daemon-reload
+#
+# 启用服务（可选）
+# systemctl --user enable wallpaper-changer.service
