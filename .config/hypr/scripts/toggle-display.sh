@@ -14,4 +14,8 @@ if xrandr | grep -q "^DP-1 connected"; then
         hyprctl keyword monitor "eDP-1, 1920x1200, 0x0, 1"
         notify-send "显示器" "笔记本屏幕已启用"
     fi
+else
+    # 如果已禁用，则启用
+    hyprctl keyword monitor "eDP-1, 1920x1200, 0x0, 1"
+    notify-send "显示器" "笔记本屏幕已启用"
 fi

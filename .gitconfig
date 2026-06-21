@@ -6,7 +6,7 @@
 [color]
   ui = true
 [core]
-  editor = vim
+  editor = nvim
 [alias]
   st = status
   ci = commit -a -v
@@ -18,5 +18,6 @@
   default = simple
 [http]
   postBuffer = 524288000
+	sslVerify = true
 [credential]
   helper = store

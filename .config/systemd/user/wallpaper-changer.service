@@ -1,21 +1,24 @@
 # ~/.config/systemd/user/wallpaper-changer.service
 [Unit]
-Description=Hyprland Random Wallpaper Changer
+Description=Hyprland Random Wallpaper Changer - Hourly
+After=graphical-session.target
+Wants=graphical-session.target
 PartOf=graphical-session.target
 
 [Service]
 Type=simple
-ExecStart=%h/.config/hypr/scripts/random-wallpaper.sh daemon
-Restart=on-failure
+ExecStart=%h/.config/hypr/scripts/random-wallpaper.sh timer
+Restart=always
+RestartSec=10
 Environment=DISPLAY=:0
+Environment=WAYLAND_DISPLAY=wayland-1
+
+# 工作目录
+WorkingDirectory=%h
+
+# 标准输出和错误重定向到日志
+StandardOutput=journal
+StandardError=journal
 
 [Install]
 WantedBy=graphical-session.target
-
-# Run this service:
-#
-# 重新加载 systemd
-# systemctl --user daemon-reload
-#
-# 启用服务（可选）
-# systemctl --user enable wallpaper-changer.service
