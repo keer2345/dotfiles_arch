@@ -122,13 +122,13 @@ alias ssh_tencent="ssh keer@175.178.230.127"
 
 alias r=ranger
 
-alias enableproxy='export http_proxy=http://127.0.0.1:20171 https_proxy=http://127.0.0.1:20171'
-alias disproxy='unset http_proxy https_proxy'
+alias eproxy='export http_proxy=http://127.0.0.1:7890 https_proxy=http://127.0.0.1:7890'
+alias dproxy='unset http_proxy https_proxy'
 
 alias idea='~/Software/JetBrains/IDEA/bin/idea.sh > ~/Software/JetBrains/IDEA/output.log 2>&1'
 alias vim="nvim"
-alias ngrep='grep -r --exclude-dir=node_modules --exclude-dir=dist --exclude-dir=.git'
-alias kclock="tty-clock -c -C -s -f -B -D"
+alias ngrep='grep -r --exclude-dir=node_modules --exclude-dir=dist --exclude-dir=.git --exclude-dir=.venv --exclude-dir=__pycache__'
+alias kclock="tty-clock -c -C 2 -s -f -B -D"
 
 # Remove j alias and properly load autojump
 unalias j 2>/dev/null
@@ -145,31 +145,27 @@ export PATH=${MAVEN_HOME}/bin:$PATH
 
 . "$HOME/.local/bin/env"
 
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-
-
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
 eval $(thefuck --alias fk) 
 
 # rust mirrors
 export RUSTUP_UPDATE_ROOT=https://mirrors.tuna.tsinghua.edu.cn/rustup/rustup
 export RUSTUP_DIST_SERVER=https://mirrors.tuna.tsinghua.edu.cn/rustup
 
-# Go 环境变量配置
+# Go 二进制文件安装位置
 export GOPATH=$HOME/go
+
+# 把 Go 工具加入 PATH（不然敲命令找不到）
 export PATH=$PATH:$GOPATH/bin
+
+# 模块代理（国内用户建议用阿里云镜像，速度飞起🚀）
+# export GOPROXY=https://proxy.golang.org,direct
+# 国内加速方案：
+export GOPROXY=https://goproxy.cn,direct
+#export GOSUMDB=sum.golang.google.cn
+
 # Arch Linux 不需要添加 /usr/local/go/bin
 # Go 二进制已经在系统 PATH 中
 
-# 设置代理（国内用户推荐）
-export GOPROXY=https://goproxy.cn,direct
-#export GOSUMDB=sum.golang.google.cn
 
 
 eval $(thefuck --alias)
@@ -179,22 +175,41 @@ eval $(thefuck --alias)
 alias fdisk='sudo fdisk -l'
 # 
 # 挂载东芝500G移动硬盘
-alias mount-toshiba='sudo mount -t ntfs-3g /dev/sda1 /mnt/disk/toshiba500g -o iocharset=utf8'
+alias m-toshiba='sudo mount -t ntfs-3g /dev/sda1 /mnt/disk/toshiba500g -o iocharset=utf8'
 # 卸载东芝500G移动硬盘
-alias umount-toshiba='sudo umount /mnt/disk/toshiba500g'
+alias um-toshiba='sudo umount /mnt/disk/toshiba500g'
 # 查看硬盘挂载状态
 alias ls-toshiba='lsblk | grep -A 2 sda'
 #
-# 挂载三星250G移动硬盘
-alias mount-samsung='sudo mount -t ntfs-3g /dev/sda1 /mnt/disk/samsung250g -o iocharset=utf8'
+# 挂载三星250G移动硬盘 (ntfs)
+# alias m-samsung='sudo mount /dev/sdc1 /mnt/disk/samsung250g'
 # 卸载三星250G移动硬盘
-alias umount-samsung='sudo umount /mnt/disk/samsung250g'
+# alias um-samsung='sudo umount /mnt/disk/samsung250g'
 # 查看硬盘挂载状态
-alias ls-samsung='lsblk | grep -A 2 sda'
+# alias ls-samsung='lsblk | grep -A 2 sda'
+#
+#
+# 挂载三星250G移动硬盘 (ext4)
+alias m-samsung='mount /mnt/disk/samsung250g'
+# 卸载三星250G移动硬盘 (ext4)
+alias um-samsung='umount /mnt/disk/samsung250g'
 #
 # 挂载西部数据2T移动硬盘
-alias mount-wd='sudo mount -t ntfs-3g /dev/sda1 /mnt/disk/westdata2t -o iocharset=utf8'
-# 卸载三星250G移动硬盘
-alias umount-wd='sudo umount /mnt/disk/westdata2t'
+alias m-wd='sudo mount -t ntfs-3g /dev/sda1 /mnt/disk/westdata2t -o iocharset=utf8'
+# 卸载西部数据2T移动硬盘
+alias um-wd='sudo umount /mnt/disk/westdata2t'
 # 查看硬盘挂载状态
 alias ls-wd='lsblk | grep -A 2 sda'
+
+eval $(keychain --eval --quiet ~/.ssh/id_ed25519)
+
+export PATH="$HOME/.cargo/bin:$PATH"
+
+# GoHome on external drive (added by migrate_go_home.sh)
+export PATH="/mnt/disk/samsung250g/GoHome/bin:$PATH"
+
+
+alias ruffall='uv run ruff check --fix && uv run ruff format'
+export UV_CACHE_DIR="/mnt/disk/samsung250g/.cache/uv"
+
+source /usr/share/nvm/init-nvm.sh

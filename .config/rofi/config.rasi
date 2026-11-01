@@ -17,4 +17,6 @@
 
 //@theme "/home/keer/.config/rofi/themes/squared-nord.rasi"
 
-@theme "/home/keer/.config/rofi/themes/squared-nord.rasi"
+//@theme "/home/keer/.config/rofi/themes/squared-nord.rasi"
+
+@theme "/usr/share/rofi/themes/fancy.rasi"

@@ -4,7 +4,7 @@
 # https://github.com/alacritty/alacritty-theme
 [general]
 import = [
-    "~/.config/alacritty/themes/themes/dracula_plus.toml"
+    "~/.config/alacritty/themes/themes/kanagawa_wave.toml"
 ]
 
 live_config_reload = true
@@ -15,7 +15,7 @@ TERM = "xterm-256color"
 
 [font]
 builtin_box_drawing = true
-size = 9.5
+size = 11
 
 [font.normal]
 family = "FiraCode Nerd Font"
@@ -38,11 +38,11 @@ decorations = "none"  # 关键设置：隐藏标题栏
 dimensions = { columns = 100, lines = 30 }
 position = { x = 100, y = 100 }
 startup_mode = "Windowed"
-opacity = 0.9
+# opacity = 0.9
 
-[colors.primary]
-background = "#221a0f"
-foreground = "#d3af86"
+# [colors.primary]
+# background = "#221a0f"
+# foreground = "#d3af86"
 
 [colors.normal]
 black = "#221a0f"

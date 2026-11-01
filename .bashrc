@@ -11,6 +11,5 @@ PS1='[\u@\h \W]\$ '
 
 
 
-. "$HOME/.cargo/env"
 
 . "$HOME/.local/bin/env"
