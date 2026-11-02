@@ -1,5 +1,5 @@
 #!/bin/sh
-# 笔记本内屏（eDP-1）开关 —— 绑定 SUPER + SHIFT + P
+# 笔记本内屏（eDP-1）开关 —— 绑定 SUPER + F12（原 SUPER + SHIFT + P）
 #
 # 为什么重写（迁移到 Lua 配置后失效的两个原因）：
 #   1. Hyprland 0.57 的 Lua 模式下 `hyprctl keyword` 已废除，执行只返回

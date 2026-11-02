@@ -100,7 +100,7 @@ require("binds")
 | `SUPER + V` | 浮动 / 平铺切换 |
 | `SUPER + F` | 全屏切换 |
 | `SUPER + P` | 伪平铺（dwindle pseudo） |
-| `SUPER + SHIFT + P` | 关闭 / 打开笔记本内屏（须有外接屏才允许关） |
+| `SUPER + F12` | 关闭 / 打开笔记本内屏（须有外接屏才允许关） |
 | `SUPER + G` | 当前窗口调成「屏宽 50% × 屏高 100%」 |
 | `SUPER + H/J/K/L` | 焦点 左/下/上/右 |
 | `SUPER + SHIFT + H/J/K/L` | 移动窗口 |
@@ -130,7 +130,6 @@ require("binds")
 | `SHIFT + PRINT` | 全屏截图 |
 | `SUPER + PRINT` | 当前窗口截图 |
 | `SUPER + C` | 屏幕取色（hex 进剪贴板） |
-| `SUPER + SHIFT + P` | 开关笔记本内屏 |
 
 ### 音频 / 亮度 / 媒体
 

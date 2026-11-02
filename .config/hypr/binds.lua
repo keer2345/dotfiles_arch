@@ -95,8 +95,8 @@ hl.bind(mainMod .. " + PRINT", hl.dsp.exec_cmd(scripts .. "/shot.sh window"))
 -- 屏幕取色：点哪里取哪里的颜色，hex 值直接进剪贴板并弹通知
 hl.bind(mainMod .. " + C", hl.dsp.exec_cmd(scripts .. "/pick-color.sh"))
 
--- 开关笔记本内屏
-hl.bind(mainMod .. " + SHIFT + P", hl.dsp.exec_cmd(scripts .. "/toggle-display.sh"))
+-- 开关笔记本内屏（原为 mainMod + SHIFT + P，与伪平铺 P 同键族，改到 F12 更顺手）
+hl.bind(mainMod .. " + F12", hl.dsp.exec_cmd(scripts .. "/toggle-display.sh"))
 
 ---------------------
 ---- 音频 / 亮度 ----
