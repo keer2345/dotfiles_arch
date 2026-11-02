@@ -213,3 +213,11 @@ alias ruffall='uv run ruff check --fix && uv run ruff format'
 export UV_CACHE_DIR="/mnt/disk/samsung250g/.cache/uv"
 
 source /usr/share/nvm/init-nvm.sh
+
+
+uv-kernel-install() {
+  local name="${1:-$(basename "$PWD")}"
+  uv run ipython kernel install --user \
+    --name="$name" \
+    --display-name "$name (uv)"
+}
