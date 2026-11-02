@@ -118,6 +118,3 @@ hl.permission({ binary = "/usr/(bin|local/bin)/hyprctl", type = "plugin", mode =
 
 -- 想要「任何程序都允许读屏」的宽松做法（不建议，仅备查）：
 -- hl.permission({ binary = ".*", type = "screencopy", mode = "allow" })
-
--- 想要「任何程序都允许读屏」的宽松做法（不建议，仅备查）：
--- hl.permission({ binary = ".*", type = "screencopy", mode = "allow" })
