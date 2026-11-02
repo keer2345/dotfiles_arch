@@ -100,6 +100,7 @@ require("binds")
 | `SUPER + V` | 浮动 / 平铺切换 |
 | `SUPER + F` | 全屏切换 |
 | `SUPER + P` | 伪平铺（dwindle pseudo） |
+| `SUPER + SHIFT + P` | 关闭 / 打开笔记本内屏（须有外接屏才允许关） |
 | `SUPER + G` | 当前窗口调成「屏宽 50% × 屏高 100%」 |
 | `SUPER + H/J/K/L` | 焦点 左/下/上/右 |
 | `SUPER + SHIFT + H/J/K/L` | 移动窗口 |
@@ -367,6 +368,11 @@ before_sleep_cmd = pidof hyprlock || hyprlock --immediate-render --grace 0
   搜不到，必须用 `hl.dsp.*`。例如：
   - `hyprctl dispatch resizeactive exact 50% 100%` → 脚本里读显示器尺寸后
     `hl.dsp.window.resize({ x = 宽*0.5, y = 高 })`
+- **`hyprctl keyword` 在 0.57 同样废了**：执行只返回 `unknown request`，退出码还是 0
+  —— 典型的静默失败。脚本里要动态改配置项，改用 `hyprctl eval '<lua>'`：
+  `hyprctl eval 'hl.monitor({ output = "eDP-1", disabled = true })'`。
+  反过来重新启用时**必须显式写 `disabled = false`**，只给 mode/position 时已有的
+  `disabled = true` 会继续生效，屏幕回不来（实测）。
 - **`swayosd-client` 是异步的**：它只负责给 server 发消息就返回。连续测试时必须加
   0.5~1 秒延迟，否则每一步读到的都是上一步的值，会误判成「没生效」。
 - **0.57 没有内置的 overview / expo**，想要只能装 `hyprexpo` 插件。
