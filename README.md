@@ -21,6 +21,7 @@ yadm status
 
 ## Window Manager
 
+- [Hyprland](https://hypr.land)
 - [Openbox](.config/openbox/README.md)
 - [bspwm](.config/bspwm/README.md)
 
