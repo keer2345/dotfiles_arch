@@ -51,6 +51,7 @@ local menu = "fuzzel"
 -- https://wiki.hypr.land/Configuring/Autostart/
 hl.on("hyprland.start", function()
     hl.exec_cmd("systemctl --user start wallpaper-changer.service")
+    -- waybar-git 原生支持 Hyprland 0.57 的 Lua dispatch 协议，无需 PATH 兼容层
     hl.exec_cmd("waybar")
     hl.exec_cmd("nm-applet")
     hl.exec_cmd("flclash")

@@ -337,14 +337,14 @@ label:focus {
 }
 
 #tray {
-    margin: 0 0 4 0 ;
-    border-radius: 4;
+    margin: 0 0 4px 0;
+    border-radius: 4px;
     background-color: rgba(0, 0, 0, 0);
 }
 
 #battery {
-    margin: 0 0 4 0 ;
-    border-radius: 4;
+    margin: 0 0 4px 0;
+    border-radius: 4px;
     background-color: rgba(0, 0, 0, 0);
     color: #ffffff;
 }
@@ -359,8 +359,8 @@ label:focus {
 }
 
 #pulseaudio {
-    margin: 0 0 4 0 ;
-    border-radius: 4;
+    margin: 0 0 4px 0;
+    border-radius: 4px;
     background-color: rgba(0, 0, 0, 0);
     color: #ffffff;
 }
@@ -375,8 +375,8 @@ label:focus {
 }
 
 #clock {
-    margin: 0 0 4 0 ;
-    border-radius: 4;
+    margin: 0 0 4px 0;
+    border-radius: 4px;
     background-color: rgba(0, 0, 0, 0);
 }
 
