@@ -53,10 +53,10 @@ run_apply() {
 
 if [ "$state" = "false" ]; then
     # 当前是启用状态 -> 准备关闭，但必须先确认有外接屏，否则会把自己锁在无界面状态
-    if [ "${ext:-0}" -lt 1 ]; then
-        notify "没有外接显示器，笔记本内屏保持开启"
-        exit 0
-    fi
+    ## if [ "${ext:-0}" -lt 1 ]; then
+    ##     notify "没有外接显示器，笔记本内屏保持开启"
+    ##     exit 0
+    ## fi
     run_apply true && notify "笔记本内屏已关闭"
 else
     # 已禁用 / 不在列表 -> 重新启用
