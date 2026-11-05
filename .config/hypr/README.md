@@ -47,11 +47,12 @@ hyprctl -j getoption general:gaps_out
 | `input.lua` | 46 | 键盘、触摸板、三指手势、单设备（触摸板灵敏度） |
 | `rules.lua` | 90 | 工作区归属 10 条 + 窗口规则 12 条 |
 | `binds.lua` | 146 | 全部按键绑定（运行时 70 条） |
-| `hypridle.conf` | 54 | 空闲管理（**hyprlang 语法，不是 Lua**） |
+| `hypridle.conf` | 72 | 空闲管理（**hyprlang 语法，不是 Lua**） |
 | `hyprlock.conf` | 30 | 锁屏外观（hyprlang） |
 | `hyprpaper.conf` | 5 | 壁纸（由 `scripts/random-wallpaper.sh` 自动生成） |
 | `scripts/shot.sh` | 57 | 截图：区域 / 全屏 / 当前窗口 |
 | `scripts/pick-color.sh` | 14 | 屏幕取色 |
+| `scripts/idle-backlight.sh` | 66 | 空闲调光 / 恢复（替代 `brightnessctl -s/-r`，见 7.9） |
 | `scripts/toggle-display.sh` | — | 开关笔记本内屏 |
 | `scripts/random-wallpaper.sh`、`change_wallpaper.sh` | — | 壁纸轮换（配合 systemd user 服务） |
 | `hyprland.conf` | 388 | **历史文件，不生效**，仅作迁移前参考 |
@@ -222,14 +223,19 @@ Hyprland 0.57 内置的 `hyprctl notify` 是现成可用的。
 
 `hyprlock.conf`：
 
-- `background.path = screenshot`（锁屏时截取当前桌面再模糊），换壁纸后锁屏自动跟随。
-  取不到截图时退回 `color` 纯色底。
-- 前置依赖：权限系统里必须放行 `hyprlock` 的 `screencopy`，见 6.6。
+- `background.path = /usr/share/hypr/wall1.png`（用 hypr 自带壁纸，不用 `screenshot`，
+  避免锁屏跟着桌面内容变化）。
+- `background.brightness = 1.0`：这个值只影响锁屏背景图的**合成亮度**，不改硬件背光。
+  调低会让锁屏界面看起来发暗，容易被误认为「屏幕被调暗」。
 
-`hypridle.conf`（时间线：150s 调光 → 180s 关键盘背光 → 300s 锁屏 → 330s 关屏 → 1800s 挂起）：
+`hypridle.conf`，注意 `timeout` 单位是**秒**：
+480s 调光 → 480s 关键盘背光 → 1200s 锁屏 + 关屏 → 36000s 挂起。
 
 - **锁屏一律直接调 `hyprlock`，不用 `loginctl lock-session`**，原因见 7.5。
-- `brightnessctl` 用百分比而非绝对值，原因见 7.5。
+- **锁屏和关屏是两条独立 listener，共用同一个 timeout**。不要写成
+  `hyprlock; hyprctl dispatch 'hl.dsp.dpms(...)'`——hyprlock 是前台阻塞进程，
+  用 `;` 串在它后面的命令要等解锁才会执行，等于永远不会关屏。
+- 调光 / 恢复走 `scripts/idle-backlight.sh`，**不用 `brightnessctl -s/-r`**，原因见 7.9。
 
 ### 6.5 屏幕共享
 
@@ -393,6 +399,58 @@ hyprctl dispatch 'hl.dsp.exec_cmd("sh ~/some-script.sh")'
 
 - 沙箱里读不到 `systemctl --user` 的 DBUS；需要时在脚本里补
   `export DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus`。
+- **沙箱的 `/proc` 是独立 PID namespace**：`ps` / `pgrep` 看不到宿主进程，
+  `pkill` 也杀不到宿主进程。想查/杀宿主进程必须同样走 `exec_cmd` 转发，
+  脚本里 `ps -C xxx` 才能看到真实结果。
+- `/sys` 不可写 → `brightnessctl set` 会报 `Permission denied`，亮度相关的验证
+  一律转发到宿主执行。
+
+---
+
+### 7.9 锁屏后发现亮度回不去（`brightnessctl -r` 的状态污染）
+
+**现象**：空闲变暗后再回来，屏幕一直是暗的；手动调亮，下次空闲还是回不到原亮度。
+
+**原因**：`brightnessctl -s` 把「改动前亮度」写进
+`/run/user/1000/brightnessctl/backlight/<dev>`，而**这个文件在 hypridle 重启后依然存在**：
+
+1. hypridle 在「已调暗」状态下被重启（崩溃 / 手动重启 / 重载配置）；
+2. 下一次 `-s` 把 **10%** 当成原值写进去；
+3. 此后 `-r` 永远恢复到 10%。曾在这个文件里读到 `6554`，正好是 65535 的 10%。
+
+另一个坑：**`brightnessctl -r` 在没有保存文件时退出码是 0**（只打印当前亮度，什么都不做），
+所以 `brightnessctl -r || brightnessctl set 100%` 这种兜底**永远不会触发**。
+
+**先排除两个常见误判**：
+
+- `hyprlock` 本身不改硬件背光；DPMS 开关也不改——实测 `dpms off` → `dpms on`，
+  `amdgpu_bl2/brightness` 前后都是 65535。
+- `hyprlock.conf` 的 `background.brightness` 只是锁屏背景图的合成亮度，不是硬件调光。
+
+**修法**：改用 `scripts/idle-backlight.sh`，自己维护状态文件
+`$XDG_RUNTIME_DIR/hypr-idle-backlight/<dev>`，写入条件是
+**「还没有记录」或「当前亮度明显高于调暗目标」**：
+
+- 有记录 + 已经在暗位 → 说明是调暗后被重复触发 / hypridle 重启，保持原记录，不覆盖；
+- 没有记录 + 亮度很低 → 用户本来就把屏幕调得很低，如实记录，解锁后才能回到原值而不是跳到 100%。
+
+所以正常使用下，解锁恢复的是**调暗前那一刻的亮度**（80% 就回 80%），不是固定 100%。
+只有状态文件被删（`/run` 被清、手动删除）且当次调光没记录成功时，才会退到 100%。
+
+> 判定阈值留了 2% 容差：`set 10%` 在 max=65535 上会向上取整成 6554，而
+> `65535*10/100 = 6553`，不留容差就会把「刚被调暗的值」误判成原值（这个 bug 实测踩过一次）。
+
+验证（必须转发到宿主，沙箱写不了 `/sys`）：
+
+```bash
+S=~/.config/hypr/scripts/idle-backlight.sh
+$S dim      # 65535 → 6554，状态文件记 65535
+$S dim      # 已暗状态下再触发，状态文件仍是 65535
+$S restore  # 65535
+```
+
+**顺带修掉的顺序问题**：原配置 600s 关屏、1200s 锁屏，中间 10 分钟是「屏幕黑着但没锁」，
+动一下鼠标就回到未锁桌面。现在两条都在 1200s，同时触发。
 
 ---
 
