@@ -15,9 +15,9 @@ for i = 6, 10 do
     hl.workspace_rule({ workspace = tostring(i), monitor = "DP-1" })
 end
 
--- 注意：SUPER + F5..F8 绑的是工作区 11-14，但这四个还没有归属规则，
+-- 注意：SUPER + F1..F8 绑的是工作区 11-18，这八个还没有归属规则，
 -- 两块屏都在时会跟着焦点跑。需要固定的话取消注释下面两行：
--- for i = 11, 14 do
+-- for i = 11, 18 do
 --     hl.workspace_rule({ workspace = tostring(i), monitor = "DP-1" })
 -- end
 

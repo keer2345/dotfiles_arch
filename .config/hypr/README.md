@@ -46,7 +46,7 @@ hyprctl -j getoption general:gaps_out
 | `theme.lua` | 103 | 间距、边框、圆角、阴影、模糊、5 条贝塞尔曲线、17 条动画 |
 | `input.lua` | 46 | 键盘、触摸板、三指手势、单设备（触摸板灵敏度） |
 | `rules.lua` | 90 | 工作区归属 10 条 + 窗口规则 12 条 |
-| `binds.lua` | 146 | 全部按键绑定（运行时 70 条） |
+| `binds.lua` | 147 | 全部按键绑定（运行时 78 条） |
 | `hypridle.conf` | 72 | 空闲管理（**hyprlang 语法，不是 Lua**） |
 | `hyprlock.conf` | 30 | 锁屏外观（hyprlang） |
 | `hyprpaper.conf` | 5 | 壁纸（由 `scripts/random-wallpaper.sh` 自动生成） |
@@ -114,14 +114,22 @@ require("binds")
 |---|---|
 | `SUPER + 1..0` | 切到工作区 1..10 |
 | `SUPER + SHIFT + 1..0` | 把窗口移到工作区 1..10 |
-| `SUPER + F5..F8` | 切到工作区 11..14 |
-| `SUPER + SHIFT + F5..F8` | 把窗口移到工作区 11..14 |
+| `SUPER + F1..F8` | 切到工作区 11..18 |
+| `SUPER + SHIFT + F1..F8` | 把窗口移到工作区 11..18 |
 | `SUPER + S` | 开关 special 暂存区 `magic` |
 | `SUPER + SHIFT + S` | 把窗口送进暂存区 |
 | `SUPER + 滚轮` | 相对切换工作区 |
 
 工作区归属：1-5 在 `eDP-1`，6-10 在 `DP-1`，工作区 1 是 `eDP-1` 的默认。
-**11-14 目前没有归属规则**，见第 8 节。
+**11-18 目前没有归属规则**，见第 8 节。
+
+整排 F 键的分工（`binds.lua` 里 F1-F8 走循环生成，F9-F12 是单条）：
+
+| 键 | 用途 |
+|---|---|
+| `F1`–`F8` | 工作区 11–18（+SHIFT 移窗口） |
+| `F9` / `F10` / `F11` | 静音 / 音量- / 音量+ |
+| `F12` | 开关笔记本内屏 |
 
 ### 截图与取色
 
@@ -458,7 +466,7 @@ $S restore  # 65535
 
 | 项 | 说明 |
 |---|---|
-| 工作区 11-14 无归属 | `rules.lua` 里已写好注释掉的 4 行，两块屏都在时会跟着焦点跑，需要时取消注释 |
+| 工作区 11-18 无归属 | `rules.lua` 里已写好注释掉的 8 行，两块屏都在时会跟着焦点跑，需要时取消注释 |
 | waybar 没有模糊 | 已开 blur，可加 `hl.layer_rule({ name="blur-waybar", match={ namespace="waybar" }, blur=true, ignore_alpha=0.5 })` |
 | `SUPER + J` 的 togglesplit 未启用 | `J` 已被 `movefocus d` 占用，需要时换键（如 `SUPER+O`） |
 | `~/.config/hypr` 不是 git 仓库 | 目前靠 `*.bak-<时间戳>` 手工备份，建议 `git init` 做版本控制 |

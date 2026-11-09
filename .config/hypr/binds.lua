@@ -62,8 +62,9 @@ for i = 1, 10 do
     hl.bind(mainMod .. " + SHIFT + " .. key, hl.dsp.window.move({ workspace = i }))
 end
 
--- F5-F8 切换工作区 11-14
-local extraKeys = { "F5", "F6", "F7", "F8" }
+-- F1-F8 切换工作区 11-18（SUPER + 1..0 已覆盖 1-10，这里接着往后排）
+-- 注意：F9/F10/F11 是音量（静音/减/加），F12 是开关内屏，所以 F 键只剩 F1-F8 可用
+local extraKeys = { "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8" }
 for idx, key in ipairs(extraKeys) do
     local ws = 10 + idx
     hl.bind(mainMod .. " + " .. key, hl.dsp.focus({ workspace = ws }))
