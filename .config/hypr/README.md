@@ -45,7 +45,7 @@ hyprctl -j getoption general:gaps_out
 | `vars.lua` | 11 | 共享变量（主修饰键、终端、文件管理器、菜单、脚本目录） |
 | `theme.lua` | 103 | 间距、边框、圆角、阴影、模糊、5 条贝塞尔曲线、17 条动画 |
 | `input.lua` | 46 | 键盘、触摸板、三指手势、单设备（触摸板灵敏度） |
-| `rules.lua` | 101 | 工作区归属 10 条 + 窗口规则 13 条 |
+| `rules.lua` | 94 | 工作区归属 10 条 + 窗口规则 12 条 |
 | `binds.lua` | 147 | 全部按键绑定（运行时 78 条） |
 | `hypridle.conf` | 72 | 空闲管理（**hyprlang 语法，不是 Lua**） |
 | `hyprlock.conf` | 30 | 锁屏外观（hyprlang） |
@@ -462,59 +462,39 @@ $S restore  # 65535
 
 ---
 
-### 7.10 新开终端把其他窗口挤走（`size` 规则被 kitty 自己覆盖）
+### 7.10 新开终端的布局方式（结论：保持平铺，不要浮动）
 
-**需求**：平铺布局下 `SUPER + T` 开终端，会把同工作区的窗口重新对半分（两个窗口时各占一半，
-三个时各占三分之一），已有的布局被打乱。
+**需求**：`SUPER + T` 开终端时，既不希望把同工作区已有的窗口挤走，也不希望新终端浮在上面
+盖住别人 —— 正确答案就是**默认的平铺分屏**，不需要任何窗口规则。
 
-**修法**：在 `rules.lua` 里让 kitty 以浮动窗口打开，不进入平铺树：
+**实测**（工作区已有 kitty + WorkBuddy 两栏时再开一个终端）：
 
-```lua
-hl.window_rule({
-    name   = "float-kitty",
-    match  = { class = "^(kitty)$" },
-    float  = true,
-    center = true,
-    size   = "960 640",
-})
-```
+| 窗口 | 开之前 | 开之后 |
+|---|---|---|
+| kitty（原有） | 943×1154 @11,35 | 943×1154 @11,35 |
+| WorkBuddy | 943×1154 @966,35 | 943×571 @966,35（右上） |
+| 新 kitty | — | 943×571 @966,618（右下） |
 
-浮动窗口直接盖在原有布局之上，平铺树完全不动。实测：工作区里原本 1898×1154 的浏览器，
-开终端前后尺寸、位置一个像素都没变。
+三个窗口全部可见、互不遮挡。dwindle 的规则是「新窗口把**当前焦点窗口**对半分」，
+关掉新窗口后原布局自动还原。所以 `rules.lua` 里**不要**给 kitty 加 `float` 规则。
 
-**踩的坑：`size` 写了但完全不生效**，新终端永远是 1918×1174（正好等于工作区可用区）。
-排查过程：
+**曾经试过并已撤销的方案**：加 `float-kitty` 规则让终端浮动 + 居中 + 固定尺寸。
+它确实不会打乱平铺树，但浮动窗口会**直接盖住下面的窗口**（1920×1200 的屏上 960×640 也能
+遮住大半内容），体验比平铺分屏差，已移除。偶尔想让某个终端浮起来，`SUPER + V` 手动切换即可。
 
-| 写法 | 结果 |
-|---|---|
-| `size = "960x640"` | 报错：`expression vec2 requires two expressions separated by whitespace` |
-| `size = {960, 640}` | 静默忽略 |
-| `size = "960 640"` | 语法对，但仍被忽略 |
-| `size = "400 300"` + `kitty -o remember_window_size=no` | **生效**，400×300 居中 |
+> **如果将来确实要让某类窗口浮动并指定尺寸**，有两个坑值得先看：
+>
+> 1. `size` 的形式：`"960x640"` 报错（`expression vec2 requires two expressions separated
+>    by whitespace`），`{960, 640}` 被静默忽略，只认 `"960 640"` 或 `{ "960", "640" }`。
+> 2. 应用可能自己记住窗口尺寸并覆盖规则。kitty 默认 `remember_window_size yes`，
+>    会把上次尺寸写进 session 并在下次启动时恢复，表现为「`size` 写了但窗口永远是
+>    `1918×1174`（工作区可用区）」。做一次 `kitty -o remember_window_size=no` 的对照就能定位。
+>    本机 `kitty.conf` 里已设 `remember_window_size no`，对平铺无影响，留着可防止这类污染。
 
-真凶是 kitty 的 `remember_window_size`（默认 `yes`）：它会把上一次的窗口尺寸写进
-session 文件，下次启动时**恢复该尺寸并覆盖 Hyprland 的 size 规则**。之前窗口一次被拉成
-1918×1174 之后，就一直记住这个值。
-
-**修法**：在 `~/.config/kitty/kitty.conf` 里加一行
-
-```conf
-remember_window_size no
-```
-
-之后 `size = "960 640"` 正常生效，实测新终端 `960×640 @480,292`（1920×1200 屏，正好居中）。
-
-**验证时要注意的假象**：`hyprctl dispatch 'hl.dsp.exec_cmd("kitty")'` 偶尔返回 `ok`
-但窗口不出现，原因是 kitty 配置了 `listen_on unix:/tmp/kitty` + `allow_remote_control yes`，
-新进程会先去连已有实例的 socket。判断存活别看 dispatch 的返回，要直接查：
-
-```bash
-hyprctl -j clients | jq -r '.[] | select(.class=="kitty") | "\(.floating) \(.size)"'
-```
-
-在宿主侧稳定复现的方式是 `setsid kitty --title KTx >/tmp/ktx.log 2>&1 </dev/null &`。
-
-**衍生用法**：想让某个终端回到平铺，`SUPER + V` 切换即可（规则只在窗口创建时求值）。
+**验证窗口时的假象**：`hyprctl dispatch 'hl.dsp.exec_cmd("kitty")'` 偶尔返回 `ok` 但窗口
+不出现，因为 kitty 配了 `listen_on unix:/tmp/kitty` + `allow_remote_control yes`，新进程会先
+去连已有实例的 socket。判断窗口是否真的出来只看 `hyprctl -j clients`，不看 dispatch 返回值；
+在宿主侧稳定复现用 `setsid kitty --title KTx >/tmp/ktx.log 2>&1 </dev/null &`。
 
 ---
 

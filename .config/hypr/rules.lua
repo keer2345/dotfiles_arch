@@ -42,16 +42,9 @@ end
 -- 不想要可以改成 hl.window_rule(...):set_enabled(false) 的方式单独关掉
 hl.window_rule({ name = "float-modals", match = { modal = true }, float = true, center = true })
 
--- 1.5) 终端浮动打开：平铺布局下新开 kitty 会挤走/压缩同工作区里的其他窗口，
---      改成浮动 + 居中 + 固定尺寸，新终端盖在原有布局之上，不影响平铺树。
---      想在某个终端里回到平铺：SUPER + V 切换。
-hl.window_rule({
-    name = "float-kitty",
-    match = { class = "^(kitty)$" },
-    float = true,
-    center = true,
-    size = "960 640",
-})
+-- 注意：kitty 保持默认平铺（不设 float），新终端会和同工作区窗口并排分屏。
+-- 曾试过 float-kitty 规则让它浮动，但浮动窗口会盖住下面的窗口，体验更差，已移除。
+-- 偶尔想让某个终端浮起来：SUPER + V 手动切换。
 
 -- 2) GPG / 密码输入框：浮动 + 居中还不够，必须保持焦点，否则输入会丢
 hl.window_rule({
