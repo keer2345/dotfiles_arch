@@ -45,7 +45,7 @@ hyprctl -j getoption general:gaps_out
 | `vars.lua` | 11 | 共享变量（主修饰键、终端、文件管理器、菜单、脚本目录） |
 | `theme.lua` | 103 | 间距、边框、圆角、阴影、模糊、5 条贝塞尔曲线、17 条动画 |
 | `input.lua` | 46 | 键盘、触摸板、三指手势、单设备（触摸板灵敏度） |
-| `rules.lua` | 90 | 工作区归属 10 条 + 窗口规则 12 条 |
+| `rules.lua` | 101 | 工作区归属 10 条 + 窗口规则 13 条 |
 | `binds.lua` | 147 | 全部按键绑定（运行时 78 条） |
 | `hypridle.conf` | 72 | 空闲管理（**hyprlang 语法，不是 Lua**） |
 | `hyprlock.conf` | 30 | 锁屏外观（hyprlang） |
@@ -459,6 +459,62 @@ $S restore  # 65535
 
 **顺带修掉的顺序问题**：原配置 600s 关屏、1200s 锁屏，中间 10 分钟是「屏幕黑着但没锁」，
 动一下鼠标就回到未锁桌面。现在两条都在 1200s，同时触发。
+
+---
+
+### 7.10 新开终端把其他窗口挤走（`size` 规则被 kitty 自己覆盖）
+
+**需求**：平铺布局下 `SUPER + T` 开终端，会把同工作区的窗口重新对半分（两个窗口时各占一半，
+三个时各占三分之一），已有的布局被打乱。
+
+**修法**：在 `rules.lua` 里让 kitty 以浮动窗口打开，不进入平铺树：
+
+```lua
+hl.window_rule({
+    name   = "float-kitty",
+    match  = { class = "^(kitty)$" },
+    float  = true,
+    center = true,
+    size   = "960 640",
+})
+```
+
+浮动窗口直接盖在原有布局之上，平铺树完全不动。实测：工作区里原本 1898×1154 的浏览器，
+开终端前后尺寸、位置一个像素都没变。
+
+**踩的坑：`size` 写了但完全不生效**，新终端永远是 1918×1174（正好等于工作区可用区）。
+排查过程：
+
+| 写法 | 结果 |
+|---|---|
+| `size = "960x640"` | 报错：`expression vec2 requires two expressions separated by whitespace` |
+| `size = {960, 640}` | 静默忽略 |
+| `size = "960 640"` | 语法对，但仍被忽略 |
+| `size = "400 300"` + `kitty -o remember_window_size=no` | **生效**，400×300 居中 |
+
+真凶是 kitty 的 `remember_window_size`（默认 `yes`）：它会把上一次的窗口尺寸写进
+session 文件，下次启动时**恢复该尺寸并覆盖 Hyprland 的 size 规则**。之前窗口一次被拉成
+1918×1174 之后，就一直记住这个值。
+
+**修法**：在 `~/.config/kitty/kitty.conf` 里加一行
+
+```conf
+remember_window_size no
+```
+
+之后 `size = "960 640"` 正常生效，实测新终端 `960×640 @480,292`（1920×1200 屏，正好居中）。
+
+**验证时要注意的假象**：`hyprctl dispatch 'hl.dsp.exec_cmd("kitty")'` 偶尔返回 `ok`
+但窗口不出现，原因是 kitty 配置了 `listen_on unix:/tmp/kitty` + `allow_remote_control yes`，
+新进程会先去连已有实例的 socket。判断存活别看 dispatch 的返回，要直接查：
+
+```bash
+hyprctl -j clients | jq -r '.[] | select(.class=="kitty") | "\(.floating) \(.size)"'
+```
+
+在宿主侧稳定复现的方式是 `setsid kitty --title KTx >/tmp/ktx.log 2>&1 </dev/null &`。
+
+**衍生用法**：想让某个终端回到平铺，`SUPER + V` 切换即可（规则只在窗口创建时求值）。
 
 ---
 
