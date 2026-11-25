@@ -1,0 +1,71 @@
+#!/usr/bin/env bash
+# cpfile —— 把文件放进 Wayland 剪贴板，在图形界面里 Ctrl+V 粘贴。
+#
+# 同时 offer 两种 MIME 类型（Wayland 协议允许，wl-copy 一次只能给一种）：
+#   x-special/gnome-copied-files  → Thunar / Nautilus / PCManFM 等 GTK 文件管理器
+#   text/uri-list                 → VSCode 目录树 / Firefox 等浏览器
+#
+#   cpfile file1 file2      复制
+#   cpfile --cut file1      剪切（GTK 文件管理器会移动文件；VSCode 按复制处理）
+set -euo pipefail
+
+ACTION=copy
+while [ "$#" -gt 0 ]; do
+    case "$1" in
+        --cut)   ACTION=cut; shift ;;
+        --copy)  ACTION=copy; shift ;;
+        --uri)   shift ;;   # 兼容旧参数：现在默认已同时提供 text/uri-list
+        -h|--help)
+            echo "用法: ${0##*/} [--copy|--cut] <文件1> [文件2 ...]" >&2
+            exit 0 ;;
+        --) shift; break ;;
+        -*) echo "未知选项: $1" >&2; exit 1 ;;
+        *) break ;;
+    esac
+done
+
+if [ "$#" -eq 0 ]; then
+    echo "用法: ${0##*/} [--copy|--cut] <文件1> [文件2 ...]" >&2
+    exit 1
+fi
+
+# 内容先落到 runtime dir，wl-clipboard-multi 启动时会读进内存，之后不再依赖文件。
+# 用固定路径而非 mktemp：避免「程序还没读完就删掉」的竞态。
+RUNDIR="${XDG_RUNTIME_DIR:-/run/user/1000}/cpfile"
+mkdir -p "$RUNDIR"
+
+CPFILE_RUNDIR="$RUNDIR" python3 - "$ACTION" "$@" <<'PY'
+import os
+import sys
+from pathlib import Path
+
+action, *args = sys.argv[1:]
+rundir = Path(os.environ["CPFILE_RUNDIR"])
+
+uris = []
+for arg in args:
+    p = Path(arg).expanduser()
+    if not p.exists():
+        print(f"跳过不存在的文件: {arg}", file=sys.stderr)
+        continue
+    # as_uri 会 resolve 成绝对路径并对空格/中文/#/%/& 做 percent-encoding
+    uris.append(p.resolve().as_uri())
+
+if not uris:
+    sys.exit(1)
+
+# GTK 格式：首行动作，后面每行一个 URI（LF 即可）
+(rundir / "gnome-copied-files").write_text(
+    action + "\n" + "\n".join(uris) + "\n", encoding="utf-8"
+)
+# text/uri-list 规范：CRLF 结尾。末尾不留空行——VSCode 的 uri-list 解析器
+# 对尾部空行不总是宽容，宁可只保留单个终止符。
+(rundir / "uri-list").write_bytes(
+    ("\r\n".join(uris) + "\r\n").encode("ascii")
+)
+PY
+
+# 程序内部会二次 fork 变 daemon，调用后立刻返回；常驻直到剪贴板被
+# 别的程序抢占（收到 cancelled 事件自行退出），新复制会自动顶掉旧实例。
+/home/keer/.local/bin/wl-clipboard-multi \
+    "$RUNDIR/gnome-copied-files" "$RUNDIR/uri-list"
