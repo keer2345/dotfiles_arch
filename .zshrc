@@ -221,3 +221,25 @@ uv-kernel-install() {
     --name="$name" \
     --display-name "$name (uv)"
 }
+
+# ── Ctrl+Shift+V 智能粘贴 ────────────────────────────────────────────
+# kitty.conf 把 Ctrl+Shift+V 映射为发送 \e[1;6v；这里接收后判断剪贴板：
+#   有文件 URI → 复制到当前目录（pastefiles）
+#   只有文本   → 走 bracketed paste 粘回命令行
+# 需要原生粘贴时用 Ctrl+Alt+V（kitty.conf 里已绑）。
+paste-smart() {
+  local copied
+  if copied=$(pastefiles 2>/dev/null) && [[ -n "$copied" ]]; then
+    zle -M "已粘贴文件到 $PWD: ${(j:, :)${(f)copied}}"
+    zle reset-prompt
+  else
+    local text
+    text=$(wl-paste -t text/plain 2>/dev/null)
+    if [[ -n "$text" ]]; then
+      # 用 bracketed paste 包装，避免多行文本里的换行被当成回车执行
+      zle -U $'\e[200~'$text$'\e[201~'
+    fi
+  fi
+}
+zle -N paste-smart
+bindkey '\e[1;6v' paste-smart
