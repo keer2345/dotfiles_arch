@@ -223,23 +223,30 @@ uv-kernel-install() {
 }
 
 # ── Ctrl+Shift+V 智能粘贴 ────────────────────────────────────────────
-# kitty.conf 把 Ctrl+Shift+V 映射为发送 \e[1;6v；这里接收后判断剪贴板：
-#   有文件 URI → 复制到当前目录（pastefiles）
-#   只有文本   → 走 bracketed paste 粘回命令行
-# 需要原生粘贴时用 Ctrl+Alt+V（kitty.conf 里已绑）。
-paste-smart() {
-  local copied
-  if copied=$(pastefiles 2>/dev/null) && [[ -n "$copied" ]]; then
-    zle -M "已粘贴文件到 $PWD: ${(j:, :)${(f)copied}}"
+# kitty 保持原生粘贴，所以文本在 zsh / nvim / ssh 里都能正常粘。
+# 这里只挂 zsh 的 bracketed-paste 钩子：粘进来的内容如果全是 file:// URI，
+# 就把文件复制到当前目录；否则原样插入命令行（不会把换行当回车执行）。
+smart-bracketed-paste() {
+  local pasted line only_uris=1 names at
+  zle .bracketed-paste pasted       # 取走终端送来的粘贴内容
+  [[ -n "$pasted" ]] || return
+
+  # 兼容 CRLF 和 gnome-copied-files 的 copy/cut 首行
+  for line in ${(f)pasted}; do
+    line=${line%$'\r'}
+    [[ -z "$line" || "$line" == copy || "$line" == cut ]] && continue
+    [[ "$line" == file://* ]] || { only_uris=0; break }
+  done
+
+  if (( only_uris )) && names=$(pastefiles 2>/dev/null) && [[ -n "$names" ]]; then
+    zle -M "已粘贴文件到 $PWD: ${(j:, :)${(f)names}}"
     zle reset-prompt
-  else
-    local text
-    text=$(wl-paste -t text/plain 2>/dev/null)
-    if [[ -n "$text" ]]; then
-      # 用 bracketed paste 包装，避免多行文本里的换行被当成回车执行
-      zle -U $'\e[200~'$text$'\e[201~'
-    fi
+    return
   fi
+
+  # 普通文本：插入到光标处（zsh 下标从 1 开始，CURSOR 从 0 开始）
+  at=$CURSOR
+  BUFFER="${BUFFER[1,at]}$pasted${BUFFER[at+1,-1]}"
+  CURSOR=$(( at + ${#pasted} ))
 }
-zle -N paste-smart
-bindkey '\e[1;6v' paste-smart
+zle -N bracketed-paste smart-bracketed-paste
