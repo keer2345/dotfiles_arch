@@ -14,6 +14,8 @@
   throwh = reset --hard HEAD^
   co = checkout
   br = branch
+	sw = switch
+	swc = switch -c
 [push]
   default = simple
 [http]
